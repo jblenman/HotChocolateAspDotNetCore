@@ -1,0 +1,52 @@
+﻿using HotChocolate.Data.Sorting.Expressions;
+using HotChocolate.Data.Sorting;
+using System.Linq.Expressions;
+
+namespace HotChocolateAspDotNetCore.Handlers;
+
+public class NullsFirstSortOperationHandler : QueryableOperationHandlerBase
+{
+    public NullsFirstSortOperationHandler() : base(2)
+    {
+    }
+
+    protected override QueryableSortOperation HandleOperation(
+        QueryableSortContext context,
+        QueryableFieldSelector fieldSelector,
+        ISortField field,
+        ISortEnumValue? sortEnumValue)
+    {
+        return AscendingSortOperation.From(fieldSelector);
+    }
+
+    private sealed class AscendingSortOperation : QueryableSortOperation
+    {
+        private AscendingSortOperation(QueryableFieldSelector fieldSelector)
+            : base(fieldSelector)
+        {
+        }
+
+        public override Expression CompileOrderBy(Expression expression)
+        {
+            return Expression.Call(
+                expression.GetEnumerableKind(),
+                nameof(Queryable.OrderBy),
+                new[] { ParameterExpression.Type, Selector.Type },
+                expression,
+                Expression.Lambda(Selector, ParameterExpression));
+        }
+
+        public override Expression CompileThenBy(Expression expression)
+        {
+            return Expression.Call(
+                expression.GetEnumerableKind(),
+                nameof(Queryable.ThenBy),
+                new[] { ParameterExpression.Type, Selector.Type },
+                expression,
+                Expression.Lambda(Selector, ParameterExpression));
+        }
+
+        public static AscendingSortOperation From(QueryableFieldSelector selector) =>
+            new AscendingSortOperation(selector);
+    }
+}

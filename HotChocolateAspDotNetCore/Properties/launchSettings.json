@@ -1,0 +1,41 @@
+{
+  "profiles": {
+    "HotChocolateAspDotNetCore": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "launchUrl": "graphql/",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "dotnetRunMessages": true,
+        "applicationUrl": "http://localhost:5051"
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "graphql/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Docker": {
+        "commandName": "Docker",
+        "launchBrowser": true,
+        "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/graphql/",
+        "environmentVariables": {
+            "ASPNETCORE_URLS": "http://+:80"
+        },
+        "publishAllPorts": true,
+        "httpPort": 32769
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:51324",
+      "sslPort": 0
+    }
+  }
+}
